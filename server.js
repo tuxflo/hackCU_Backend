@@ -15,9 +15,10 @@ var bodyParser   = require('body-parser');
 var session      = require('express-session');
 
 var configDB = require('./config/database.js');
+var url = process.env.MONGOLABDB_URI;
 
 // configuration ===============================================================
-mongoose.connect(configDB.url); // connect to our database
+mongoose.connect(url); // connect to our database
 
 require('./config/passport')(passport); // pass passport for configuration
 

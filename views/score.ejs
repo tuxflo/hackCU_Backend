@@ -1,0 +1,40 @@
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Highscore</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <style>
+        body        { padding-top:80px; word-wrap:break-word; }
+    </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Best Players:</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Score</th>
+          <th>Finished</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(var i=0; i < users.length; i++) { %>
+          <tr>
+            <td><%= users[i].local.username %></td>
+            <td><%= users[i].local.score %></td>
+            <td>
+              <div class="checkbox-inline">
+                <label><input type="checkbox" value="users[i].local.finished" <% if (users[i].local.finished == true) {%> checked <% } %>></label>
+              </div>
+            </td>
+            </tr>
+            <% } %>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

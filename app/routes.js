@@ -117,19 +117,42 @@ function saveScore(req, res) {
   process.nextTick(function() {
     //User.findOne({ 'local.username' :  user}, function(err, user) {
     //console.log("Inside findOne");
-    console.log("body score: " + req.body.score);
-    console.log("username: " + req.user);
+    User.findOne( {"local.username": req.user.local.username}, function(err, user) {
+      var oldScore = user.local.score;
+      var newScore = req.body.score;
+      if( newScore >= oldScore) {
+        user.set({"local.score": newScore});
+        user.save(function(err, updatedUser) {
+          console.log("updated score to: " + req.body.score);
+          if( err)
+            console.log("error!");
+        });
 
-    User.findOneAndUpdate(
-
-      {"local.username" : req.user.local.username},
-      {$set: {"local.score": req.body.score, "local.finished": req.body.finished}},
-      {new: true},
-      (err, req) => {
-        if(err) console.log(err);
-        return true;
+        if( user.local.finished == false  && req.body.finished == true) {
+          user.set({"local.finished": true});
+          user.save(function(err, updatedUser) {
+            console.log("updated finished status to true");
+            if( err)
+              console.log("error!");
+          });
+        } else {
+          console.log("didn't update because finished was false...");
+        }
+      } else {
+        console.log("didn't update because oldScore was better...");
       }
-    );
+    });
+
+    //User.findOneAndUpdate(
+
+    //{"local.username" : req.user.local.username},
+    //{$set: {"local.score": req.body.score, "local.finished": req.body.finished}},
+    //{new: true},
+    //(err, req) => {
+    //if(err) console.log(err);
+    //return true;
+    //}
+    //);
   });
 
 }
